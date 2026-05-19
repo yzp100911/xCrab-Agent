@@ -1,7 +1,7 @@
 {
   "name": "xcrab",
   "version": "1.0.0",
-  "description": "xCrab - 迷你型 AI 个人助手",
+  "description": "xCrab Agent - 多模型 AI 个人助手",
   "main": "index.js",
   "type": "module",
   "scripts": {

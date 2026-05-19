@@ -24,7 +24,7 @@ if (!config.minimax.apiKey || config.minimax.apiKey === 'your_api_key_here') {
   process.exit(1);
 }
 
-console.log(`  🦞 xCrab v2.0.0`);
+console.log(`  🦞 xCrab Agent v2.0.0`);
 console.log(`  模型: ${config.model}`);
 console.log(`  API: ${config.minimax.baseURL}`);
 if (config.memory.enabled) console.log('  记忆: 已启用');

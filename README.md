@@ -1,6 +1,6 @@
-# xCrab
+# xCrab Agent
 
-> 🦞 多模型 AI 网关 + 个人助手 — 基于 Node.js 构建，支持 MiniMax、DeepSeek 等主流模型
+> 🦞 xCrab Agent — 多模型 AI 个人助手，基于 Node.js 构建，支持 MiniMax、DeepSeek 等主流模型
 
 [![GPL-3.0 License](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 [![Node.js v22+](https://img.shields.io/badge/Node.js-v22+-green.svg)](https://nodejs.org/)
@@ -93,4 +93,4 @@ curl -X POST http://localhost:3000/api/chat \
 
 ---
 
-🦞 xCrab — 让 AI 助手更简单
+🦞 xCrab Agent — 让 AI 助手更简单
