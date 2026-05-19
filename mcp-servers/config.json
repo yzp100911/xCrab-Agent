@@ -1,0 +1,10 @@
+{
+  "servers": [
+    {
+      "id": "playwright",
+      "command": "node",
+      "args": ["D:/ud/node/xCrab/node_modules/@playwright/mcp/cli.js"],
+      "description": "Playwright 浏览器自动化 MCP 服务器"
+    }
+  ]
+}

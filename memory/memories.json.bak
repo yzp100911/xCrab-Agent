@@ -1,0 +1,12 @@
+{
+  "memories": [
+    {
+      "key": "user_name",
+      "value": "小叉",
+      "category": "user_info",
+      "created": 1779093358412,
+      "updated": 1779093833693
+    }
+  ],
+  "conversations": []
+}

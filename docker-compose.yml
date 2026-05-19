@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  xcatch:
+    build: .
+    container_name: xcatch
+    ports:
+      - "3000:3000"
+    environment:
+      - MINIMAX_API_KEY=${MINIMAX_API_KEY}
+      - MINIMAX_BASE_URL=${MINIMAX_BASE_URL:-https://api.minimaxi.com/v1}
+      - MODEL=${MODEL:-MiniMax-M2.7}
+      - ENABLE_MEMORY=${ENABLE_MEMORY:-true}
+      - GATEWAY_ENABLED=true
+      - GATEWAY_PORT=3000
+      - GATEWAY_TOKEN=${GATEWAY_TOKEN:-}
+    volumes:
+      - xcatch_data:/app/data
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+
+volumes:
+  xcatch_data:
