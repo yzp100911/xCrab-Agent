@@ -442,23 +442,6 @@ npm run start:all     # Start all three components sequentially
 
 ---
 
-## 🔒 Security Notes (Public Repository)
-
-This repository is **public**. Do NOT commit sensitive information:
-
-1. **`server.js` lines 1-6**: Before pushing to GitHub, clear the values (keep line structure):
-   ```javascript
-   process.env.DB_USER = process.env.DB_USER || '';
-   process.env.DB_PASS = process.env.DB_PASS || '';
-   // ... same for other lines
-   ```
-
-2. **`.env` file**: Already protected by .gitignore, but double-check before committing.
-
-3. **API Keys**: Never hardcode API keys in source files.
-
----
-
 ## 🔧 Troubleshooting
 
 | Problem | Solution |
