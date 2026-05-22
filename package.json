@@ -1,7 +1,7 @@
 {
   "name": "xcrab",
   "version": "1.0.0",
-  "description": "xCrab - 迷你型 AI 个人助手",
+  "description": "xCrab - \u8ff7\u4f60\u578b AI \u4e2a\u4eba\u52a9\u624b",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -20,5 +20,6 @@
     "uuid": "^14.0.0",
     "ws": "^8.20.1",
     "zod": "^4.4.3"
-  }
+  },
+  "license": "MIT"
 }
