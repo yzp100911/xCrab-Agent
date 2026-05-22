@@ -1,9 +1,14 @@
 # Secrets
 .env
-.env.*
+.env.local
+.env.production
+.env.development
 auth.json
 *.token
 *.secret
+
+# But track .env.example files
+!.env.example
 
 # Database / Memories
 memory/
@@ -31,3 +36,7 @@ node_modules/
 # Playwright
 .playwright-cli/
 .playwright-mcp/
+
+# OS
+.DS_Store
+Thumbs.db
