@@ -1,3 +1,5 @@
+[🇨🇳 中文] | [🇬🇧 English](README_EN.md)
+
 # xCrab-Agent 🦀
 
 **xCrab** — 迷你型 AI 个人助手，基于 MiniMax 和 DeepSeek 驱动的多模型 AI 网关，支持工具调用、浏览器自动化和技能扩展。

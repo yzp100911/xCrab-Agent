@@ -1,3 +1,5 @@
+[🇨🇳 中文](README.md) | [🇬🇧 English]
+
 # xCrab-Agent 🦀
 
 **xCrab** — A compact AI personal assistant, a multi-model AI gateway powered by MiniMax and DeepSeek, supporting tool calling, browser automation, and skill extensions.
