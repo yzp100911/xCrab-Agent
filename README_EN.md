@@ -363,6 +363,36 @@ xCrab-Agent/
 | WebSocket connection failed | Check `ECLAW_WS_URL` address and port |
 | eclaw-server frontend not accessible | Verify `wclaw/` directory exists and static file paths are correct in `server.js` |
 
+### Using PM2 to Manage Processes
+
+After PM2 restarts, it may fail to properly load environment variables from `.env`, causing `[warn] API key not provided, some features may be limited`.
+
+**Solution:** Create an `ecosystem.config.cjs` configuration file to directly specify environment variables:
+
+```javascript
+module.exports = {
+  apps: [{
+    name: 'xCrab-Agent',
+    script: './index.js',
+    instances: 1,
+    autorestart: true,
+    env: {
+      NODE_ENV: 'production',
+      MINIMAX_API_KEY: 'your_complete_api_key',
+      SERVER_PORT: 3000,
+      AUTH_PASSWORD: 'your_auth_password'
+    }
+  }]
+};
+```
+
+Startup commands:
+```bash
+pm2 start ecosystem.config.cjs
+pm2 save  # Save process list
+pm2 startup  # Enable auto-start on boot
+```
+
 ### Get API Keys
 
 - **MiniMax API**: Register at [https://platform.minimaxi.com](https://platform.minimaxi.com)
