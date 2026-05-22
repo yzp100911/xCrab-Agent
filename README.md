@@ -447,23 +447,6 @@ npm run start:all     # 按顺序启动全部三个组件
 
 ---
 
-## 🔒 安全提示（公开仓库注意事项）
-
-本仓库是**公开**的，切勿将敏感信息提交到 GitHub：
-
-1. **`server.js` 顶部 6 行**：推送前需清空值（保留行结构）：
-   ```javascript
-   process.env.DB_USER = process.env.DB_USER || '';
-   process.env.DB_PASS = process.env.DB_PASS || '';
-   // ... 其他行同理
-   ```
-
-2. **`.env` 文件**：已在 .gitignore 中保护，但提交前请再次确认。
-
-3. **API 密钥**：切勿在源代码中硬编码 API 密钥。
-
----
-
 ## 🔧 故障排除
 
 | 问题 | 解决方案 |
