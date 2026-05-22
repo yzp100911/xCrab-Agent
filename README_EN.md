@@ -393,6 +393,57 @@ pm2 save  # Save process list
 pm2 startup  # Enable auto-start on boot
 ```
 
+### MySQL Database Setup (Required for eclaw-server)
+
+eclaw-server requires MySQL to store user accounts, favorites, chat history, and feedback.
+
+#### Step 1: Install MySQL
+
+**Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install mysql-server -y
+sudo systemctl start mysql
+sudo systemctl enable mysql
+```
+
+**CentOS:**
+```bash
+sudo yum install mysql-server -y
+sudo systemctl start mysqld
+sudo systemctl enable mysqld
+```
+
+#### Step 2: Create Database
+
+```bash
+sudo mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS wclaw_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+```
+
+#### Step 3: Create Database User (Optional but Recommended)
+
+```bash
+sudo mysql -u root -p -e "CREATE USER 'wclaw'@'localhost' IDENTIFIED BY 'your_strong_password';"
+sudo mysql -u root -p -e "GRANT ALL PRIVILEGES ON wclaw_db.* TO 'wclaw'@'localhost';"
+sudo mysql -u root -p -e "FLUSH PRIVILEGES;"
+```
+
+#### Step 4: Configure Environment Variables
+
+Create a `.env` file (copy from `.env.example`) and set:
+
+```bash
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root          # or the user you created
+DB_PASS=yourpassword  # your MySQL password
+DB_NAME=wclaw_db
+```
+
+**Note:** The server will automatically create the required tables on first startup.
+
+---
+
 ### Get API Keys
 
 - **MiniMax API**: Register at [https://platform.minimaxi.com](https://platform.minimaxi.com)
