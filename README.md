@@ -367,14 +367,39 @@ xCrab-Agent/
 | 端口被占用 | 修改 `.env` 中的 `GATEWAY_PORT` 或 `ECLAW_PORT` |
 | WebSocket 连接失败 | 检查 `ECLAW_WS_URL` 地址和端口是否正确 |
 | eclaw-server 启动后无法访问前端 | 确认 `wclaw/` 目录存在且 `server.js` 正确配置了静态文件路径 |
+| PM2 重启后 API 密钥未生效 | 使用 `ecosystem.config.cjs` 配置环境变量，或在 PM2 命令中通过 `--env` 传递 |
+
+### 使用 PM2 管理进程
+
+PM2 重启后可能无法正确加载 `.env` 文件中的环境变量，导致 `[warn] API密钥未提供，某些功能可能受限`。
+
+**解决方案：** 创建 `ecosystem.config.cjs` 配置文件，在其中直接指定环境变量：
+
+```javascript
+module.exports = {
+  apps: [{
+    name: 'xCrab-Agent',
+    script: './index.js',
+    instances: 1,
+    autorestart: true,
+    env: {
+      NODE_ENV: 'production',
+      MINIMAX_API_KEY: '你的完整API密钥',
+      SERVER_PORT: 3000,
+      AUTH_PASSWORD: '你的认证密码'
+    }
+  }]
+};
+```
+
+启动命令：
+```bash
+pm2 start ecosystem.config.cjs
+pm2 save  # 保存进程列表
+pm2 startup  # 设置开机自启
+```
 
 ### 获取 API 密钥
 
 - **MiniMax API**：前往 [https://platform.minimaxi.com](https://platform.minimaxi.com) 注册获取
 - **DeepSeek API**（可选）：前往 [https://platform.deepseek.com](https://platform.deepseek.com) 注册获取
-
----
-
-## 📝 许可证
-
-MIT
