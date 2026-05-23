@@ -10,6 +10,35 @@ Download one repo, deploy everything.
 
 ---
 
+
+## ⚠️ Brand Statement
+
+**OpenCrab** is an independently developed Chinese open-source project. It has **no affiliation, derivation, authorization, or sponsorship** with [OpenClaw](https://github.com/openclaw/openclaw) (the open-source AI agent framework).
+
+### Project Positioning
+
+- **OpenCrab**: Multi-model AI Gateway — focuses on model aggregation and routing, providing high-performance API proxy services
+- **OpenClaw**: AI Agent Framework — focuses on autonomous task execution and multi-channel integration
+
+The two projects have completely different positioning, target users, and technical architectures.
+
+### Naming Origin
+
+The name **"Crab"** comes from the Chinese homophone of the developer's nickname **"蟹蟹" (xiè xiè)**, representing gratitude and a crab-themed creative culture. It is **not** derived from or associated with OpenClaw's "Claw" naming.
+
+### Trademark Disclaimer
+
+- All product names, trademarks, and registered trademarks mentioned in this document belong to their respective owners
+- OpenCrab is developed and maintained by individual developer **yzp100911**
+- This project is for learning and communication purposes only
+
+### Contact
+
+If you have any questions or suggestions, please submit them via [GitHub Issues](https://github.com/yzp100911/OpenCrab/issues).
+
+---
+
+
 ## 📦 System Architecture
 
 ```
