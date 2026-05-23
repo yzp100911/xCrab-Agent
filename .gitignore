@@ -44,3 +44,15 @@ server/uploads/
 # OS
 .DS_Store
 Thumbs.db
+
+# Backup/config dups
+*.ds
+*.bak
+*.bak2
+*.bak3
+auth-state.json
+
+# Runtime data
+sessions/
+browser/
+uploads/
