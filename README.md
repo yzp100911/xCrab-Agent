@@ -2,9 +2,9 @@
 
 > ⚠️ **注意！！！** 如果你觉得部署麻烦，可以让 AI 帮你完成部署。
 
-# skillcrab 🦀
+# skillgate-agent 🚪
 
-**skillcrab** — AI 个人助手全家桶，包含四个核心组件：**xCrab（AI 执行引擎）**、**eclaw（服务调度端）**、**cclaw（远程分发端）**、**wclaw（网页客户端）**。
+**skillgate-agent** — AI 个人助手全家桶，包含四个核心组件：**xCrab（AI 执行引擎）**、**eclaw（服务调度端）**、**cclaw（远程分发端）**、**wclaw（网页客户端）**。
 
 下载一个仓库，即可完整部署。
 
@@ -14,11 +14,11 @@
 
 ## ⚠️ 品牌声明
 
-**skillcrab** 是一个独立开发的中文开源项目，与 [OpenClaw](https://github.com/openclaw/openclaw)（开源 AI 代理框架）没有任何关联、衍生、授权或赞助关系。
+**skillgate-agent** 是一个独立开发的中文开源项目，与 [OpenClaw](https://github.com/openclaw/openclaw)（开源 AI 代理框架）没有任何关联、衍生、授权或赞助关系。
 
 ### 项目定位
 
-skillcrab 是一款**多模型 AI 网关**，专注于：
+skillgate-agent 是一款**多模型 AI 网关**，专注于：
 - 模型聚合与路由
 - API 统一接入
 - 高速、低延迟的转发服务
@@ -31,8 +31,8 @@ skillcrab 是一款**多模型 AI 网关**，专注于：
 
 ### 商标声明
 
-1. skillcrab 项目名称及相关标识由项目作者独立创作
-2. 如需在商业产品中使用 skillcrab 代码或名称，请自行评估并承担相关法律责任
+1. skillgate-agent 项目名称及相关标识由项目作者独立创作
+2. 如需在商业产品中使用 skillgate-agent 代码或名称，请自行评估并承担相关法律责任
 3. 本项目作者不对因使用本项目导致的任何商标或知识产权纠纷负责
 
 ### 联系方式
@@ -45,7 +45,7 @@ skillcrab 是一款**多模型 AI 网关**，专注于：
 
 ```
 ┌───────────────────────────────────────────────────────────────────────┐
-│                          skillcrab（本仓库）                            │
+│                          skillgate-agent（本仓库）                            │
 │                                                                       │
 │  ┌─────────────────────────────────────────────────────────────┐     │
 │  │          xCrab（AI 执行引擎）                                  │     │
@@ -193,8 +193,8 @@ npm -v     # 应显示 10.x.x
 ### 2️⃣ 克隆仓库
 
 ```bash
-git clone https://github.com/yzp100911/skillcrab.git
-cd skillcrab
+git clone https://github.com/yzp100911/skillgate-agent.git
+cd skillgate-agent
 ```
 
 ### 3️⃣ 安装依赖
@@ -282,8 +282,8 @@ sudo apt-get install -y git mysql-server
 sudo systemctl start mysql
 sudo systemctl enable mysql
 
-git clone https://github.com/yzp100911/skillcrab.git
-cd skillcrab
+git clone https://github.com/yzp100911/skillgate-agent.git
+cd skillgate-agent
 ```
 
 ### 3️⃣ 创建数据库
@@ -318,7 +318,7 @@ cd xCrab && npm run start:all
 
 ### 6️⃣ ★ 设置开机自启（systemd）
 
-以下列出了三个组件的 systemd 服务文件。**请将 `/path/to/skillcrab` 替换为你的实际部署路径。**
+以下列出了三个组件的 systemd 服务文件。**请将 `/path/to/skillgate-agent` 替换为你的实际部署路径。**
 
 ```bash
 # 🧠 xCrab AI 执行引擎
@@ -331,8 +331,8 @@ Requires=mysql.service
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/path/to/skillcrab/xCrab
-ExecStart=/usr/bin/node /path/to/skillcrab/xCrab/index.js
+WorkingDirectory=/path/to/skillgate-agent/xCrab
+ExecStart=/usr/bin/node /path/to/skillgate-agent/xCrab/index.js
 Restart=always
 RestartSec=5
 Environment=NODE_ENV=production
@@ -351,8 +351,8 @@ Requires=mysql.service
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/path/to/skillcrab/xCrab/eclaw
-ExecStart=/usr/bin/node /path/to/skillcrab/xCrab/eclaw/server.js
+WorkingDirectory=/path/to/skillgate-agent/xCrab/eclaw
+ExecStart=/usr/bin/node /path/to/skillgate-agent/xCrab/eclaw/server.js
 Restart=always
 RestartSec=5
 Environment=NODE_ENV=production
@@ -370,8 +370,8 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/path/to/skillcrab/xCrab/cclaw
-ExecStart=/usr/bin/node /path/to/skillcrab/xCrab/cclaw/index.js
+WorkingDirectory=/path/to/skillgate-agent/xCrab/cclaw
+ExecStart=/usr/bin/node /path/to/skillgate-agent/xCrab/cclaw/index.js
 Restart=always
 RestartSec=5
 
@@ -427,7 +427,7 @@ sudo systemctl start xcrab eclaw
 ## 📁 项目结构
 
 ```
-skillcrab/
+skillgate-agent/
 ├── README.md                   # 本文件（中文）
 ├── README_EN.md                # 本文件（英文）
 ├── .gitignore

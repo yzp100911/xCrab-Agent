@@ -2,9 +2,9 @@
 
 > ⚠️ **Attention!!!** If you find it troublesome, just ask AI to deploy it for you.
 
-# skillcrab 🦀
+# skillgate-agent 🦀
 
-**skillcrab** — The all-in-one AI personal assistant suite, consisting of four core components: **xCrab (AI Engine)**, **eclaw (Relay Server)**, **cclaw (Remote Agent)**, and **wclaw (Web UI)**.
+**skillgate-agent** — The all-in-one AI personal assistant suite, consisting of four core components: **xCrab (AI Engine)**, **eclaw (Relay Server)**, **cclaw (Remote Agent)**, and **wclaw (Web UI)**.
 
 Download one repo, deploy everything.
 
@@ -13,11 +13,11 @@ Download one repo, deploy everything.
 
 ## ⚠️ Brand Statement
 
-**skillcrab** is an independently developed Chinese open-source project. It has **no affiliation, derivation, authorization, or sponsorship** with [OpenClaw](https://github.com/openclaw/openclaw) (the open-source AI agent framework).
+**skillgate-agent** is an independently developed Chinese open-source project. It has **no affiliation, derivation, authorization, or sponsorship** with [OpenClaw](https://github.com/openclaw/openclaw) (the open-source AI agent framework).
 
 ### Project Positioning
 
-- **skillcrab**: Multi-model AI Gateway — focuses on model aggregation and routing, providing high-performance API proxy services
+- **skillgate-agent**: Multi-model AI Gateway — focuses on model aggregation and routing, providing high-performance API proxy services
 - **OpenClaw**: AI Agent Framework — focuses on autonomous task execution and multi-channel integration
 
 The two projects have completely different positioning, target users, and technical architectures.
@@ -29,12 +29,12 @@ The name **"Crab"** comes from the Chinese homophone of the developer's nickname
 ### Trademark Disclaimer
 
 - All product names, trademarks, and registered trademarks mentioned in this document belong to their respective owners
-- skillcrab is developed and maintained by individual developer **yzp100911**
+- skillgate-agent is developed and maintained by individual developer **yzp100911**
 - This project is for learning and communication purposes only
 
 ### Contact
 
-If you have any questions or suggestions, please submit them via [GitHub Issues](https://github.com/yzp100911/skillcrab/issues).
+If you have any questions or suggestions, please submit them via [GitHub Issues](https://github.com/yzp100911/skillgate-agent/issues).
 
 ---
 
@@ -43,7 +43,7 @@ If you have any questions or suggestions, please submit them via [GitHub Issues]
 
 ```
 ┌───────────────────────────────────────────────────────────────────────┐
-│                         skillcrab (This Repo)                          │
+│                         skillgate-agent (This Repo)                          │
 │                                                                       │
 │  ┌─────────────────────────────────────────────────────────────┐     │
 │  │              xCrab（AI Engine）                                │     │
@@ -191,8 +191,8 @@ npm -v     # Should show 10.x.x
 ### 2️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/yzp100911/skillcrab.git
-cd skillcrab
+git clone https://github.com/yzp100911/skillgate-agent.git
+cd skillgate-agent
 ```
 
 ### 3️⃣ Install Dependencies
@@ -280,8 +280,8 @@ sudo apt-get install -y git mysql-server
 sudo systemctl start mysql
 sudo systemctl enable mysql
 
-git clone https://github.com/yzp100911/skillcrab.git
-cd skillcrab
+git clone https://github.com/yzp100911/skillgate-agent.git
+cd skillgate-agent
 ```
 
 ### 3️⃣ Create Database
@@ -316,7 +316,7 @@ cd xCrab && npm run start:all
 
 ### 6️⃣ ★ Systemd Auto-start
 
-Below are systemd service files for all three components. **Replace `/path/to/skillcrab` with your actual deployment path.**
+Below are systemd service files for all three components. **Replace `/path/to/skillgate-agent` with your actual deployment path.**
 
 ```bash
 # 🧠 xCrab AI Engine
@@ -329,8 +329,8 @@ Requires=mysql.service
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/path/to/skillcrab/xCrab
-ExecStart=/usr/bin/node /path/to/skillcrab/xCrab/index.js
+WorkingDirectory=/path/to/skillgate-agent/xCrab
+ExecStart=/usr/bin/node /path/to/skillgate-agent/xCrab/index.js
 Restart=always
 RestartSec=5
 Environment=NODE_ENV=production
@@ -349,8 +349,8 @@ Requires=mysql.service
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/path/to/skillcrab/xCrab/eclaw
-ExecStart=/usr/bin/node /path/to/skillcrab/xCrab/eclaw/server.js
+WorkingDirectory=/path/to/skillgate-agent/xCrab/eclaw
+ExecStart=/usr/bin/node /path/to/skillgate-agent/xCrab/eclaw/server.js
 Restart=always
 RestartSec=5
 Environment=NODE_ENV=production
@@ -368,8 +368,8 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/path/to/skillcrab/xCrab/cclaw
-ExecStart=/usr/bin/node /path/to/skillcrab/xCrab/cclaw/index.js
+WorkingDirectory=/path/to/skillgate-agent/xCrab/cclaw
+ExecStart=/usr/bin/node /path/to/skillgate-agent/xCrab/cclaw/index.js
 Restart=always
 RestartSec=5
 
@@ -425,7 +425,7 @@ sudo systemctl start xcrab eclaw
 ## 📁 Project Structure
 
 ```
-skillcrab/
+skillgate-agent/
 ├── README.md                   # This file (Chinese)
 ├── README_EN.md                # This file (English)
 ├── .gitignore
@@ -506,17 +506,17 @@ skillcrab/
 MIT
 # ⚠️ Brand Statement
 
-> **skillcrab is an independent open-source project. It is NOT affiliated with, endorsed by, or connected to OpenClaw (openclaw.ai) or any related projects.**
+> **skillgate-agent is an independent open-source project. It is NOT affiliated with, endorsed by, or connected to OpenClaw (openclaw.ai) or any related projects.**
 
 ---
 
 ## 📌 Independent Statement
 
-skillcrab is a **multi-model AI gateway** independently developed and maintained by the open-source community. It is a separate project from **OpenClaw** (openclaw.ai) and has no organizational, technical, or marketing affiliation with the OpenClaw team.
+skillgate-agent is a **multi-model AI gateway** independently developed and maintained by the open-source community. It is a separate project from **OpenClaw** (openclaw.ai) and has no organizational, technical, or marketing affiliation with the OpenClaw team.
 
 **Key Differences:**
 
-| Item | skillcrab | OpenClaw |
+| Item | skillgate-agent | OpenClaw |
 |------|----------|----------|
 | **Type** | Multi-model AI Gateway | AI Personal Assistant |
 | **Focus** | Model aggregation & routing | Autonomous task execution |
@@ -528,7 +528,7 @@ skillcrab is a **multi-model AI gateway** independently developed and maintained
 
 ## 📌 Project Positioning
 
-skillcrab is designed as a **lightweight, high-performance AI gateway framework** that:
+skillgate-agent is designed as a **lightweight, high-performance AI gateway framework** that:
 
 - Provides unified API access to multiple LLM providers
 - Supports MiniMax, DeepSeek, and other mainstream models
@@ -543,9 +543,9 @@ Our mission is to make AI model integration simpler and more accessible.
 
 The name **"Crab"** is inspired by the creature's characteristics:
 
-- **Multi-tasking**: Crabs can move in multiple directions simultaneously, just like skillcrab routing requests across different AI models
+- **Multi-tasking**: Crabs can move in multiple directions simultaneously, just like skillgate-agent routing requests across different AI models
 - **Resilience**: Hard shell, adaptable nature — reflecting the project's robustness
-- **Community-driven**: Like crabs living in colonies, skillcrab grows with community contributions
+- **Community-driven**: Like crabs living in colonies, skillgate-agent grows with community contributions
 
 The "x" prefix follows the Unix naming convention (e.g., `xorg`, `xref`), while "Crab" represents the project's identity. This naming has no relation to OpenClaw's branding or the "Claw" terminology.
 
@@ -553,7 +553,7 @@ The "x" prefix follows the Unix naming convention (e.g., `xorg`, `xref`), while 
 
 ## ⚖️ Trademark Disclaimer
 
-- **skillcrab**™ is used to identify our open-source project only
+- **skillgate-agent**™ is used to identify our open-source project only
 - This trademark does not grant any rights to use the name in commercial products or services
 - Any similarity to other trademarks is coincidental
 - Users of this software assume all responsibilities for their own compliance with applicable laws and regulations
@@ -562,10 +562,10 @@ The "x" prefix follows the Unix naming convention (e.g., `xorg`, `xref`), while 
 
 ## 🤝 Contribution & Contact
 
-skillcrab is an open-source project licensed under MIT. We welcome contributions from developers worldwide.
+skillgate-agent is an open-source project licensed under MIT. We welcome contributions from developers worldwide.
 
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/yzp100911/skillcrab/issues)
-- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/yzp100911/skillcrab/discussions)
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/yzp100911/skillgate-agent/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/yzp100911/skillgate-agent/discussions)
 - 📖 **Documentation**: Pull requests welcome
 - ⭐ **Star & Share**: Your support motivates us
 
