@@ -5,235 +5,180 @@ An AI intelligent assistant powered by MiniMax-M2.7 model with extensible skill 
 ## Features
 
 - 🤖 AI Chat (MiniMax-M2.7 model)
-- 🔧 Extensible Skill System
-- 🌐 Gateway API Service
-- 📊 Monitoring & Statistics
+- 🔧 Extensible Skill System (browser automation, translation, weather, etc.)
+- 🌐 Gateway API Service (REST + SSE streaming)
+- 💾 Memory System (session history storage and retrieval)
+- 📊 Monitoring & Statistics (call counts, quota tracking)
+- 🔐 Token Authentication
 
 ## Requirements
 
 - Node.js >= 18.0.0
-- MySQL 5.7+ or MariaDB 10.3+
+- MySQL 5.7+ or MariaDB 10.3+ (optional, for memory system)
 - Linux Server (Ubuntu 20.04+ recommended)
+- PM2 process manager
 
 ## Quick Deployment
 
-### Method 1: Using an Overseas Server (for GitHub Access)
-
-If your local network cannot access GitHub (e.g., mainland China), use an overseas server to deploy:
+### One-Click Deploy
 
 ```bash
-# 1. Install Node.js 18+ on the overseas server
+# 1. Clone the repository
+git clone https://github.com/yzp100911/skillgate-agent.git
+cd skillgate-agent
+
+# 2. Run deploy script
+chmod +x deploy.sh
+./deploy.sh
+```
+
+### Manual Deploy
+
+```bash
+# 1. Install Node.js 18+
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
-# 2. Install MySQL
+# 2. Install MySQL (optional)
 sudo apt-get install -y mysql-server
+sudo systemctl start mysql
+sudo systemctl enable mysql
 
-# 3. Clone the project (from overseas server with GitHub access)
-git clone https://github.com/yzp100911/skillgate-agent.git
-cd skillgate-agent/xCrab
-
-# 4. Install dependencies
-npm install
-
-# 5. Configure environment variables
-cp .env.example .env
-# Edit .env with your configuration
-
-# 6. Initialize database
-mysql -u root -p < src/sql/schema.sql
-
-# 7. Start the service
-npm run start
-# Or use PM2
+# 3. Install PM2
 npm install -g pm2
-pm2 start dist/index.js --name xcrab
-```
 
-### Method 2: Direct Deployment
-
-If your network can access GitHub normally:
-
-```bash
+# 4. Clone project
 git clone https://github.com/yzp100911/skillgate-agent.git
 cd skillgate-agent/xCrab
+
+# 5. Install dependencies
 npm install
+
+# 6. Configure environment
 cp .env.example .env
-# Edit .env with your configuration
-mysql -u root -p < src/sql/schema.sql
-pm2 start dist/index.js --name xcrab
+nano .env
+
+# 7. Start service
+chmod +x start.sh
+./start.sh
+
+# 8. Verify service
+curl http://localhost:60016/health
 ```
 
 ## Configuration
 
 ### Environment Variables (.env)
 
-| Variable | Required | Description | Example |
+| Variable | Required | Description | Default |
 |----------|----------|-------------|---------|
-| `PORT` | Yes | Service port | `60016` |
-| `MINIMAX_API_KEY` | Yes | MiniMax API Key | `sk-xxx` |
-| `MINIMAX_MODEL` | No | Model name, default `MiniMax-M2.7` | `MiniMax-M2.7` |
-| `MINIMAX_BASE_URL` | No | API URL | `https://api.minimaxi.com/anthropic` |
-| `MYSQL_HOST` | No | MySQL host | `localhost` |
-| `MYSQL_PORT` | No | MySQL port | `3306` |
-| `MYSQL_USER` | Yes | MySQL username | `root` |
-| `MYSQL_PASSWORD` | Yes | MySQL password | `your_password` |
-| `MYSQL_DATABASE` | No | Database name | `wclaw_db` |
+| MINIMAX_API_KEY | ✅ | MiniMax API Key | - |
+| AUTH_TOKEN | ✅ | API access token | - |
+| PORT | ❌ | Service port | 60016 |
+| MINIMAX_MODEL | ❌ | Model name | MiniMax-M2.7 |
+| MINIMAX_BASE_URL | ❌ | API URL | https://api.minimaxi.com/v1 |
+| ENABLE_MEMORY | ❌ | Enable memory system | true |
+| GATEWAY_ENABLED | ❌ | Enable Gateway | true |
+| GATEWAY_TOKEN | ❌ | Gateway token | - |
 
-### Port Reference
-
-- **60016**: Gateway service port (HTTP)
-- **3306**: MySQL database port
-
-Make sure these ports are open in your firewall.
-
-## Database Setup
-
-### Install MySQL
+## MySQL Setup (Optional)
 
 ```bash
-# Ubuntu/Debian
-sudo apt update
+# Install MySQL
 sudo apt install -y mysql-server
-
-# Start MySQL
 sudo systemctl start mysql
 sudo systemctl enable mysql
+
+# Fix authentication (caching_sha2_password issue)
+sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password'; FLUSH PRIVILEGES;"
+
+# Create database (tables are created automatically)
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS wclaw_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 ```
 
-### Initialize Database
-
-```bash
-# Login to MySQL
-sudo mysql -u root
-
-# Create database and user (adjust password as needed)
-CREATE DATABASE wclaw_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password';
-FLUSH PRIVILEGES;
-EXIT;
-
-# Import schema
-mysql -u root -p wclaw_db < src/sql/schema.sql
-```
-
-### ⚠️ Common Issue: MySQL Authentication Error
-
-If you encounter:
-```
-Authentication plugin 'caching_sha2_password' cannot be used
-```
-
-Solution:
-```sql
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password';
-FLUSH PRIVILEGES;
-```
-
-## Managing Services with PM2
-
-```bash
-# Install PM2
-npm install -g pm2
-
-# Start service
-pm2 start dist/index.js --name xcrab
-
-# Check status
-pm2 status
-
-# View logs
-pm2 logs xcrab
-
-# Restart service
-pm2 restart xcrab
-
-# Stop service
-pm2 stop xcrab
-```
+> ⚠️ **Note**: MySQL 8.0+ defaults to `caching_sha2_password` plugin, which some Node.js clients don't support. Change to `mysql_native_password` as shown above.
 
 ## Health Check
 
-After deployment, verify service status:
+```bash
+curl http://localhost:60016/health
+# Returns: {"status":"ok","timestamp":"...","uptime":...}
+```
+
+## Service Management
 
 ```bash
-# Check PM2 status
-pm2 status
+pm2 start ecosystem.config.cjs   # Start
+pm2 status                        # Check status
+pm2 logs xcrab                    # View logs
+pm2 restart xcrab                 # Restart
+pm2 stop xcrab                    # Stop
+pm2 delete xcrab                  # Delete process
+pm2 startup                       # Auto-start on boot
+```
 
-# Test health endpoint
-curl http://localhost:60016/health
+## API Usage
 
-# Expected response
-{"status":"ok","timestamp":"2026-01-01T00:00:00.000Z","uptime":123.45}
+```bash
+curl -X POST http://localhost:60016/api/chat \
+  -H "Authorization: Bearer YOUR_AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"message":"Hello"}'
+```
+
+## Troubleshooting
+
+### 1. MySQL Authentication Error
+```
+Error: ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol
+```
+**Cause**: MySQL 8.0+ uses `caching_sha2_password` by default.
+
+**Fix**:
+```bash
+sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password'; FLUSH PRIVILEGES;"
+```
+
+### 2. Port Already in Use
+```
+Error: listen EADDRINUSE :::60016
+```
+**Fix**:
+```bash
+lsof -i :60016   # Find the process
+pm2 restart xcrab
+```
+
+### 3. Service Won't Start
+```bash
+pm2 logs xcrab --lines 50   # Check detailed logs
+node -v                      # Check version, need >= 18.0.0
+npm install                  # Reinstall dependencies
 ```
 
 ## Project Structure
 
 ```
-skillgate-agent/
-├── xCrab/
-│   ├── src/
-│   │   ├── index.js          # Main entry
-│   │   ├── gateway.js        # Gateway service
-│   │   ├── agent.js          # Agent core
-│   │   ├── eclaw.js          # Eclaw integration
-│   │   ├── sql/
-│   │   │   └── schema.sql    # Database schema
-│   │   └── skills/           # Skills directory
-│   ├── .env.example          # Environment example
-│   ├── package.json
-│   └── README.md
-└── README.md
+xCrab/
+├── index.js                 # Main entry
+├── src/                     # Core source code
+│   ├── gateway/             # Gateway HTTP service
+│   │   ├── server.js        # Server (with /health endpoint)
+│   │   ├── auth.js          # Auth module
+│   │   └── frontend/        # Web frontend
+│   ├── tools.js             # Utility functions
+│   ├── memory/              # Memory system
+│   └── stats/               # Monitoring & stats
+├── skills/                  # Skill modules
+├── eclaw/                   # Service dispatcher
+├── cclaw/                   # Remote distributor
+├── wclaw/                   # Web client
+├── data/                    # Data storage
+├── start.sh                 # Start script
+├── ecosystem.config.cjs     # PM2 config
+└── .env.example             # Environment template
 ```
-
-## Troubleshooting
-
-### Service Won't Start
-
-1. Check if port is occupied:
-   ```bash
-   lsof -i :60016
-   ```
-
-2. Verify Node.js version:
-   ```bash
-   node --version  # needs >= 18.0.0
-   ```
-
-3. Check PM2 logs:
-   ```bash
-   pm2 logs xcrab
-   ```
-
-### Database Connection Failed
-
-1. Confirm MySQL is running:
-   ```bash
-   sudo systemctl status mysql
-   ```
-
-2. Test database connection:
-   ```bash
-   mysql -u root -p -h localhost
-   ```
-
-3. Verify .env database configuration.
-
-### Network Access Issues
-
-If service is inaccessible externally:
-
-1. Check firewall settings:
-   ```bash
-   sudo ufw allow 60016
-   ```
-
-2. Ensure service binds to 0.0.0.0 (not 127.0.0.1).
-
-## Support
-
-- GitHub Issues: https://github.com/yzp100911/skillgate-agent/issues
 
 ## License
 
-MIT License
+This project is open-sourced under the [MIT License](../LICENSE).
