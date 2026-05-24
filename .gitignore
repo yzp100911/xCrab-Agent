@@ -1,70 +1,34 @@
-# Secrets
-.env
-.env.*
-!.env.example
-auth.json
-*.token
-*.secret
-
-# Node
+# Dependencies
 node_modules/
 
-# Logs
-*.log
-
-# Database files (runtime)
-*.db
-*.db-wal
-*.db-shm
-*.db-journal
+# Environment
+.env
+.env.local
+.env.*.local
 
 # Runtime data (generated)
-memory/
-memories/
-mcp-servers/
-canvases/
-client/data/
-server/uploads/
-.playwright-cli/
-.playwright-mcp/
-
-# Images (generated)
-*.png
-*.jpg
-*.jpeg
-*.gif
-
-# Backups
-*.bak
-*.bak2
-*.bak3
-*.bak4
-*.bak5
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Backup/config dups
-*.ds
-*.bak
-*.bak2
-*.bak3
-auth-state.json
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Runtime data
+# Build
+dist/
+build/
+
+# Memory data (keep structure but not content)
+xCrab/src/memory/*.js
+!xCrab/src/memory/store.js
+
+# Sessions
 sessions/
-browser/
-uploads/
-
-# Backup/config dups
-*.ds
-*.bak
-*.bak2
-*.bak3
-auth-state.json
-
-# Runtime data
-sessions/
-browser/
-uploads/

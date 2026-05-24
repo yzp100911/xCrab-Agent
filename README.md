@@ -1,175 +1,152 @@
-🦀 skillgate-agent
+# skillgate-agent 🦀
 
-**skillgate-agent** — AI 个人助手全家桶，包含四个核心组件：**xCrab（AI 执行引擎）**、**eclaw（服务调度端）**、**cclaw（远程分发端）**、**wclaw（网页客户端）**。
+基于 MiniMax-M2.7 的智能 AI 助手，支持技能扩展、记忆系统和 Gateway 认证。
 
-下载一个仓库，即可完整部署。
+## 功能特性
 
----
+- 🤖 **AI 对话** - 基于 MiniMax-M2.7 模型
+- 🦀 **技能系统** - 支持动态加载各种技能（如浏览器自动化、翻译等）
+- 💾 **记忆系统** - 支持对话历史存储和检索
+- 🔐 **Gateway 认证** - 支持 Token 认证保护
+- 🌐 **浏览器自动化** - 可选支持 Playwright 浏览器控制
 
-## ⚠️ 品牌声明
+## 快速部署
 
-**skillgate-agent** 是一个独立开发的中文开源项目，与 [OpenClaw](https://github.com/openclaw/openclaw)（开源 AI 代理框架）没有任何关联、衍生、授权或赞助关系。
-
-### 项目定位
-
-skillgate-agent 是一款**多模型 AI 网关**，专注于：
-- 模型聚合与路由
-- API 统一接入
-- 高速、低延迟的转发服务
-- 支持 MiniMax、DeepSeek 等国内主流模型
-
-### 命名来源
-
-- **"Crab"** 代表螃蟹 —— 象征高效、迅速、横向移动
-- 整体命名参考了开源社区中常见的动物系命名惯例（如 TensorFlow、Camel 等），并无心模仿或混淆任何现有品牌
-
-### 商标声明
-
-1. skillgate-agent 项目名称及相关标识由项目作者独立创作
-2. 如需在商业产品中使用 skillgate-agent 代码或名称，请自行评估并承担相关法律责任
-3. 本项目作者不对因使用本项目导致的任何商标或知识产权纠纷负责
-
-### 联系方式
-
-如有任何品牌相关问题，请通过 GitHub Issues 联系项目维护者。
-
----
-
-## 📦 系统架构
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                          skillgate-agent（本仓库）                   │
-│                                                                       │
-│  ┌─────────────────────────────────────────────────────────────┐   │
-│  │          xCrab（AI 执行引擎）                                  │   │
-│  │   ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   │   │
-│  │   │ LLM 调用      │   │ 工具/技能     │   │ MCP 客户端    │   │   │
-│  │   │ MiniMax      │   │ 注册中心     │   │ 扩展通信      │   │   │
-│  │   │ DeepSeek     │   │ 技能模块     │   │              │   │   │
-│  │   └──────────────┘   └──────────────┘   └──────────────┘   │   │
-│  └─────────────────────────┬───────────────────────────────────┘   │
-│                            │                                        │
-│                            ▼                                        │
-│  ┌─────────────────────────────────────────────────────────────┐   │
-│  │             eclaw（服务调度端）                                 │   │
-│  │   ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   │   │
-│  │   │ HTTP API     │   │ WebSocket    │   │ MySQL 数据库  │   │   │
-│  │   │ 路由/鉴权     │   │ 消息转发      │   │ 用户/历史/    │   │   │
-│  │   │              │   │              │   │ 收藏/反馈    │   │   │
-│  │   └──────────────┘   └──────────────┘   └──────────────┘   │   │
-│  └─────┬─────────────────────────┬────────────────────────────┘   │
-│        │                         │                                │
-│        ▼                         ▼                                │
-│  ┌─────────────────┐   ┌─────────────────────┐                    │
-│  │ wclaw（网页端）   │   │ cclaw（分发端）       │                    │
-│  │ 聊天界面         │   │ WebSocket 远程      │                    │
-│  │ 会话管理         │◄──►│ 命令执行终端        │                    │
-│  │ 文件展示         │   │ 状态监控            │                    │
-│  │ 设置/收藏        │   │ 心跳保活            │                    │
-│  └─────────────────┘   └─────────────────────┘                    │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 🚀 快速开始
-
-### 📋 环境要求
-
-| 环境 | 要求 |
-|------|------|
-| **Node.js** | **v22.12 或更高** |
-| **npm** | 随 Node.js 自带 |
-| **MySQL** | **8.0+**（必须安装并运行） |
-| **系统** | Windows 10+ / Ubuntu 20.04+ / macOS |
-
----
-
-## 🪟 Windows 部署（简略版）
+### 方式一：一键部署（推荐）
 
 ```bash
 git clone https://github.com/yzp100911/skillgate-agent.git
 cd skillgate-agent
-cd xCrab
-npm install
-
-# 配置 .env（填入 API_KEY 和 DB_PASS）
-copy .env.example .env
-
-# 启动（三个终端）
-cd xCrab && npm start                              # AI 执行引擎
-cd xCrab/eclaw && node server.js                   # 服务调度端
-# 访问 http://localhost:10090
+chmod +x deploy.sh
+./deploy.sh
 ```
 
----
+### 方式二：手动部署
 
-## ⚙️ 核心环境变量
+```bash
+# 1. 克隆仓库
+git clone https://github.com/yzp100911/skillgate-agent.git
+cd skillgate-agent
 
-### xCrab AI 执行引擎
+# 2. 进入 xCrab 目录
+cd xCrab
 
-| 变量 | 必填 | 说明 |
-|------|------|------|
-| `MINIMAX_API_KEY` | ✅ | MiniMax API 密钥 |
-| `DEEPSEEK_API_KEY` | ❌ | DeepSeek API 密钥 |
+# 3. 安装依赖
+npm install
 
-### eclaw 服务调度端
+# 4. 配置环境变量
+cp .env.example .env
+nano .env  # 编辑填入 AUTH_TOKEN 和 MINIMAX_API_KEY
 
-| 变量 | 默认值 | 必填 | 说明 |
-|------|--------|------|------|
-| `ECLAW_PORT` | `10090` | ❌ | 网页访问端口 |
-| `DB_PASS` | — | ✅ | **你的 MySQL 密码** |
+# 5. 启动服务
+chmod +x start.sh
+./start.sh
 
----
+# 6. 验证服务
+curl -H "Authorization: Bearer YOUR_AUTH_TOKEN" \\
+     http://localhost:60016/api/chat \\
+     -d '{"message":"你好"}'
+```
 
-## 🌟 功能亮点
+## 环境要求
 
-| 功能 | 描述 |
-|------|------|
-| 🤖 **多模型支持** | 集成 MiniMax、DeepSeek 等主流大模型，统一 API 接口 |
-| 🔌 **技能扩展** | 支持 MCP 协议扩展，插件化架构 |
-| 🌐 **网页客户端** | 浏览器直接访问，无需安装 |
-| 💾 **会话管理** | 历史记录、收藏夹、反馈机制 |
-| 🔒 **安全可靠** | API 鉴权、命令执行管控 |
+- Node.js 18+
+- PM2 (进程管理器)
+- Git
 
----
+## 配置说明
 
-## 📂 项目结构
+编辑 `.env` 文件：
+
+```bash
+# 必填
+AUTH_TOKEN=your_secure_token_here
+MINIMAX_API_KEY=your_api_key_here
+
+# 可选（已有默认值）
+MINIMAX_BASE_URL=https://api.minimaxi.com/v1
+MINIMAX_MODEL=MiniMax-M2.7
+PORT=60016
+ENABLE_MEMORY=true
+GATEWAY_ENABLED=true
+GATEWAY_TOKEN=your_gateway_token_here
+```
+
+## API 使用
+
+### 聊天接口
+
+```bash
+curl -X POST http://localhost:60016/api/chat \\
+  -H "Authorization: Bearer YOUR_AUTH_TOKEN" \\
+  -H "Content-Type: application/json" \\
+  -d '{"message":"你好，请介绍一下你自己"}'
+```
+
+### 响应格式
+
+```json
+{
+  "code": 200,
+  "data": {
+    "content": "你好！我是 xCrab...",
+    "sessionId": "xxx-xxx-xxx"
+  }
+}
+```
+
+## PM2 管理命令
+
+```bash
+pm2 status xcrab       # 查看状态
+pm2 logs xcrab         # 查看日志
+pm2 restart xcrab      # 重启
+pm2 stop xcrab         # 停止
+pm2 delete xcrab       # 删除进程
+```
+
+## 目录结构
 
 ```
 skillgate-agent/
-├── xCrab/                      # AI 执行引擎
+├── xCrab/
 │   ├── src/
-│   │   ├── core/               # 核心模块
-│   │   ├── skills/             # 技能模块
-│   │   └── mcp/                 # MCP 客户端
-│   ├── eclaw/                  # 服务调度端
-│   │   └── server.js           # API 服务
-│   ├── cclaw/                  # 远程分发端
-│   └── wclaw/                  # 网页客户端
-│
+│   │   ├── index.js          # 主入口
+│   │   ├── api.js            # API 路由
+│   │   ├── bot.js            # Bot 逻辑
+│   │   ├── memory/           # 记忆系统
+│   │   │   └── store.js      # 存储模块
+│   │   └── skills/           # 技能目录
+│   ├── .env.example         # 环境变量模板
+│   ├── package.json
+│   ├── start.sh             # 启动脚本
+│   └── ecosystem.config.js  # PM2 配置
+├── deploy.sh                # 一键部署脚本
 ├── README.md
-└── README_EN.md
+└── .gitignore
 ```
 
----
+## 常见问题
 
-## 📄 许可证
+### 1. 启动失败
 
-本项目基于 [MIT License](LICENSE) 开源。
+检查日志：`pm2 logs xcrab`
 
----
+常见原因：
+- 端口被占用：修改 `.env` 中的 `PORT`
+- API Key 无效：检查 `MINIMAX_API_KEY`
+- 依赖未安装：运行 `npm install`
 
-## 🙏 致谢
+### 2. 无法访问 API
 
-- [MiniMax](https://www.minimaxi.com/) — 提供 API 支持
-- [DeepSeek](https://deepseek.com/) — 提供 API 支持
-- [MCP](https://modelcontextprotocol.github.io/) — 开放标准协议
-- 所有开源贡献者
+确认：
+- 防火墙开放了端口（默认 60016）
+- 使用正确的 Token：`Authorization: Bearer YOUR_AUTH_TOKEN`
 
----
+### 3. 记忆系统不工作
 
-<p align="center">
-  <strong>skillgate-agent</strong> — 让 AI 助手触手可及
-</p>
+确认 `.env` 中 `ENABLE_MEMORY=true`
+
+## 许可证
+
+MIT

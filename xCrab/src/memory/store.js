@@ -1,57 +1,89 @@
-import Database from 'better-sqlite3';
+const fs = require('fs').promises;
+const path = require('path');
 
-export class MemoryStore {
-  constructor({ dbPath }) {
-    this.db = new Database(dbPath);
-    this.init();
+const DATA_DIR = path.join(__dirname, '../../.data/memory');
+const STORE_FILE = path.join(DATA_DIR, 'store.json');
+
+class MemoryStore {
+  constructor() {
+    this.data = { sessions: {}, memories: [] };
   }
 
-  init() {
-    this.db.exec(`
-      CREATE TABLE IF NOT EXISTS memories (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        key TEXT UNIQUE NOT NULL,
-        value TEXT NOT NULL,
-        category TEXT DEFAULT 'general',
-        level TEXT DEFAULT 'mid',
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
-      CREATE INDEX IF NOT EXISTS idx_memories_key ON memories(key);
-      CREATE INDEX IF NOT EXISTS idx_memories_category ON memories(category);
-      CREATE INDEX IF NOT EXISTS idx_memories_level ON memories(level);
-    `);
+  async initialize() {
+    try {
+      await fs.mkdir(DATA_DIR, { recursive: true });
+      try {
+        const content = await fs.readFile(STORE_FILE, 'utf-8');
+        this.data = JSON.parse(content);
+      } catch {
+        await this.save();
+      }
+    } catch (error) {
+      console.error('Memory store initialization failed:', error);
+    }
   }
 
-  save(key, value, category = 'general', level = 'mid') {
-    const stmt = this.db.prepare(`
-      INSERT INTO memories (key, value, category, level, updated_at)
-      VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
-      ON CONFLICT(key) DO UPDATE SET
-        value = excluded.value,
-        category = excluded.category,
-        level = excluded.level,
-        updated_at = CURRENT_TIMESTAMP
-    `);
-    return stmt.run(key, value, category, level);
+  async save() {
+    await fs.writeFile(STORE_FILE, JSON.stringify(this.data, null, 2));
   }
 
-  load(key) {
-    const stmt = this.db.prepare('SELECT * FROM memories WHERE key = ?');
-    return stmt.get(key);
+  async add(sessionId, role, content) {
+    if (!this.data.sessions[sessionId]) {
+      this.data.sessions[sessionId] = [];
+    }
+    this.data.sessions[sessionId].push({ role, content, timestamp: Date.now() });
+    await this.save();
   }
 
-  search(query) {
-    const stmt = this.db.prepare('SELECT * FROM memories WHERE value LIKE ?');
-    return stmt.all(`%${query}%`);
+  async search(query, sessionId = null, limit = 10) {
+    const results = [];
+    const queryLower = query.toLowerCase();
+    
+    if (sessionId && this.data.sessions[sessionId]) {
+      for (const msg of this.data.sessions[sessionId]) {
+        if (msg.content.toLowerCase().includes(queryLower)) {
+          results.push(msg);
+        }
+      }
+    }
+    
+    return results.slice(0, limit);
   }
 
-  getAll() {
-    const stmt = this.db.prepare('SELECT * FROM memories ORDER BY updated_at DESC');
-    return stmt.all();
+  async get(sessionId, limit = 50) {
+    if (!this.data.sessions[sessionId]) return [];
+    return this.data.sessions[sessionId].slice(-limit);
   }
 
-  close() {
-    this.db.close();
+  async getAll(sessionId = null) {
+    if (sessionId) {
+      return this.data.sessions[sessionId] || [];
+    }
+    return Object.entries(this.data.sessions).flatMap(([sid, msgs]) =>
+      msgs.map(m => ({ ...m, sessionId: sid }))
+    );
+  }
+
+  async formatForPrompt(sessionId = null, limit = 20) {
+    const memories = sessionId 
+      ? await this.get(sessionId, limit) 
+      : (await this.getAll()).slice(-limit);
+    
+    if (memories.length === 0) return '';
+    
+    return '\\n\\n--- 最近对话记录 ---\\  +
+      memories.map(m => m.role + ': ' + m.content).join('\\n') +
+      '\\n--- 记录结束 ---\\n';
+  }
+
+  async clear(sessionId = null) {
+    if (sessionId) {
+      delete this.data.sessions[sessionId];
+    } else {
+      this.data.sessions = {};
+    }
+    await this.save();
   }
 }
+
+module.exports = { MemoryStore };
