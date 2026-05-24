@@ -42,3 +42,7 @@ xCrab/Text.txt
 xCrab/Text260523.txt
 xCrab/*.py
 xCrab/dotnet-install.sh
+
+# Python scripts and temp text files in xCrab root
+xCrab/*.py
+xCrab/page*.txt
